@@ -2,6 +2,7 @@ import logging
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import os
+from typing import Dict, List, Optional, Union
 
 class SpotifyService:
     """
@@ -50,7 +51,7 @@ class SpotifyService:
             self.logger.error(f"Failed to setup Spotify client: {e}")
             self.sp = None
     
-    async def get_track_info(self, spotify_url: str) -> dict | None:
+    async def get_track_info(self, spotify_url: str) -> Optional[Union[Dict, List]]:
         """
         Get track information from Spotify URL
         Works with track, album, and playlist URLs
@@ -82,7 +83,7 @@ class SpotifyService:
             self.logger.error(f"Error processing Spotify URL {spotify_url}: {e}")
             return None
     
-    async def _get_single_track(self, track_id: str) -> dict:
+    async def _get_single_track(self, track_id: str) -> Optional[Dict]:
         """Get single track info"""
         try:
             track = self.sp.track(track_id)
@@ -91,7 +92,7 @@ class SpotifyService:
             self.logger.error(f"Error getting track {track_id}: {e}")
             return None
     
-    async def _get_album_tracks(self, album_id: str) -> list:
+    async def _get_album_tracks(self, album_id: str) -> List[Dict]:
         """Get all tracks from album"""
         try:
             album = self.sp.album(album_id)
@@ -110,7 +111,7 @@ class SpotifyService:
             self.logger.error(f"Error getting album {album_id}: {e}")
             return []
     
-    async def _get_playlist_tracks(self, playlist_id: str) -> list:
+    async def _get_playlist_tracks(self, playlist_id: str) -> List[Dict]:
         """Get all tracks from playlist"""
         try:
             tracks = []
@@ -129,7 +130,7 @@ class SpotifyService:
             self.logger.error(f"Error getting playlist {playlist_id}: {e}")
             return []
     
-    def _format_track_info(self, track: dict) -> dict:
+    def _format_track_info(self, track: Dict) -> Dict:
         """Format track info into standard format"""
         try:
             return {

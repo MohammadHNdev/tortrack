@@ -5,6 +5,7 @@ import tempfile
 import asyncio
 import yt_dlp
 from pathlib import Path
+from typing import Dict, Optional
 
 class MusicDownloader:
     """
@@ -19,7 +20,7 @@ class MusicDownloader:
         self.temp_dir = Path(tempfile.gettempdir()) / "tortrack_downloads"
         self.temp_dir.mkdir(exist_ok=True)
     
-    async def download_track(self, track_info: dict) -> str | None:
+    async def download_track(self, track_info: Dict) -> Optional[str]:
         """
         Download track and return file path
         """
