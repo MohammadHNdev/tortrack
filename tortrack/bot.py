@@ -78,21 +78,16 @@ class TelegramBot:
         Start the bot - this is all users need to call!
         """
         async def main():
-            try:
-                await self.setup()
-                self.logger.info("Starting bot...")
-                await self.dp.start_polling(self.bot)
-            except KeyboardInterrupt:
-                self.logger.info("Bot stopped by user")
-            except Exception as e:
-                self.logger.error(f"Bot error: {e}")
-            finally:
-                await self.cleanup()
-        
+            await self.setup()
+            self.logger.info("Starting bot...")
+            # The `start_polling` method will run until the bot is stopped.
+            await self.dp.start_polling(self.bot)
+            await self.cleanup()
+
         try:
             asyncio.run(main())
-        except KeyboardInterrupt:
-            self.logger.info("Goodbye!")
+        except (KeyboardInterrupt, SystemExit):
+            self.logger.info("Bot stopped!")
     
     # convenience method for advanced users
     async def send_message(self, chat_id: int, text: str):

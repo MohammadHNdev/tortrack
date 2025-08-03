@@ -29,17 +29,7 @@ setup(
         "Topic :: Internet :: Proxy Servers",
     ],
     python_requires=">=3.8",
-    install_requires=[
-        "aiogram>=3.0.0",
-        "spotipy>=2.22.0",
-        "yt-dlp>=2023.7.6",
-        "pymongo>=4.0.0",
-        "motor>=3.0.0",
-        "python-dotenv>=1.0.0",
-        "requests>=2.28.0",
-        "PySocks>=1.7.1",
-        "stem>=1.8.0",
-    ],
+    install_requires=[req for req in open("requirements.txt").read().splitlines() if req and not req.startswith("#")],
     entry_points={
         "console_scripts": [
             "tortrack=tortrack.cli:main",
