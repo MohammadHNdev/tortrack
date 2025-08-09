@@ -133,16 +133,23 @@ class SpotifyService:
     def _format_track_info(self, track: Dict) -> Dict:
         """Format track info into standard format"""
         try:
+            album_info = track.get('album')
+            album_name = "Unknown Album"
+            cover_url = None
+
+            if isinstance(album_info, dict):
+                album_name = album_info.get('name', 'Unknown Album')
+                images = album_info.get('images')
+                if images and isinstance(images, list) and len(images) > 0:
+                    cover_url = images[0].get('url')
+
             return {
                 "id": track.get('id', ''),
                 "name": track.get('name', 'Unknown Title'),
                 "artist": track['artists'][0]['name'] if track.get('artists') else 'Unknown Artist',
-                "album": track.get('album', {}).get('name', 'Unknown Album'),
+                "album": album_name,
                 "duration_ms": track.get('duration_ms', 0),
-                "cover_url": (
-                    track.get('album', {}).get('images', [{}])[0].get('url')
-                    if track.get('album', {}).get('images') else None
-                ),
+                "cover_url": cover_url,
                 "spotify_url": f"https://open.spotify.com/track/{track.get('id', '')}"
             }
         except Exception as e:
