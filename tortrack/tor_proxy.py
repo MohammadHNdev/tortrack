@@ -102,9 +102,10 @@ class TorManager:
                 'https': f'socks5h://127.0.0.1:{self.socks_port}'
             }
             
-            # setup socks for other libraries
-            socks.set_default_proxy(socks.SOCKS5, "127.0.0.1", self.socks_port)
-            socket.socket = socks.socksocket
+            # The following lines are removed to avoid global monkey-patching,
+            # which can cause issues with other libraries.
+            # socks.set_default_proxy(socks.SOCKS5, "127.0.0.1", self.socks_port)
+            # socket.socket = socks.socksocket
         
         return session
     
